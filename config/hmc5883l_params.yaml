@@ -1,0 +1,31 @@
+hmc5883l_compass_node:
+  ros__parameters:
+    # ── Fake Mode ──────────────────────────────────────
+    fake_mode: true             # true: random data, false: real I2C
+
+    # ── I2C Settings ────────────────────────────────────
+    i2c_bus: 1                  # /dev/i2c-1
+    device_address: 0x1E        # HMC5883L fixed address
+
+    # ── Publish Rate ────────────────────────────────────
+    publish_rate: 15.0          # Hz
+
+    # ── TF Frame ────────────────────────────────────────
+    frame_id: "mag_link"
+
+    # ── Gain Setting ────────────────────────────────────
+    #   0=±0.88Ga  1=±1.3Ga(default)  2=±1.9Ga  3=±2.5Ga
+    #   4=±4.0Ga   5=±4.7Ga           6=±5.6Ga  7=±8.1Ga
+    gain: 1
+
+    # ── Data Output Rate ────────────────────────────────
+    #   0=0.75Hz  1=1.5Hz  2=3Hz  3=7.5Hz
+    #   4=15Hz    5=30Hz   6=75Hz
+    data_rate: 4
+
+    # ── Samples Averaged ────────────────────────────────
+    #   0=1  1=2  2=4  3=8
+    samples_averaged: 3         # 8 samples
+
+    # ── Covariance (diagonal) ──────────────────────────
+    magnetic_field_covariance: 0.0  # T² (0 = unknown)
