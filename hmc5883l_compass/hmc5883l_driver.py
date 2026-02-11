@@ -1,3 +1,8 @@
+# Copyright 2025 The hmc5883l_compass Authors
+#
+# Use of this source code is governed by an MIT-style
+# license that can be found in the LICENSE file or at
+# https://opensource.org/licenses/MIT.
 """HMC5883L I2C Driver - 3-axis digital compass / magnetometer."""
 
 import random
@@ -26,24 +31,20 @@ class FakeHMC5883LDriver:
 
 
 class HMC5883LDriver:
-    """Low-level I2C driver for Honeywell HMC5883L.
-
-    Datasheet: HMC5883L-FDS (Honeywell)
-    Output data order is X, Z, Y (not X, Y, Z).
-    """
+    """Low-level I2C driver for Honeywell HMC5883L."""
 
     # ── Register Map ──────────────────────────────────────────────
-    REG_CONFIG_A  = 0x00
-    REG_CONFIG_B  = 0x01
-    REG_MODE      = 0x02
-    REG_DATA_X_H  = 0x03   # 6 bytes: XH, XL, ZH, ZL, YH, YL
-    REG_STATUS    = 0x09
-    REG_ID_A      = 0x0A   # 'H'
-    REG_ID_B      = 0x0B   # '4'
-    REG_ID_C      = 0x0C   # '3'
+    REG_CONFIG_A = 0x00
+    REG_CONFIG_B = 0x01
+    REG_MODE = 0x02
+    REG_DATA_X_H = 0x03   # 6 bytes: XH, XL, ZH, ZL, YH, YL
+    REG_STATUS = 0x09
+    REG_ID_A = 0x0A   # 'H'
+    REG_ID_B = 0x0B   # '4'
+    REG_ID_C = 0x0C   # '3'
 
     # ── Gain Table ───────────────────────────────────────────────
-    #  gain setting → (register value, LSB/Gauss)
+    #  gain setting -> (register value, LSB/Gauss)
     GAIN_TABLE = {
         0: (0x00, 1370.0),    # ±0.88 Ga
         1: (0x20, 1090.0),    # ±1.3  Ga (default)
@@ -86,11 +87,7 @@ class HMC5883LDriver:
 
     # ── Burst read ───────────────────────────────────────────────
     def read_all(self):
-        """Read magnetic field in one burst.
-
-        Returns:
-            (mx, my, mz) – magnetic field in Tesla
-        """
+        """Read magnetic field in one burst and return (mx, my, mz) in Tesla."""
         buf = bytes(self.bus.read_i2c_block_data(
             self.address, self.REG_DATA_X_H, 6))
 

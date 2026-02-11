@@ -1,15 +1,20 @@
 #!/usr/bin/env python3
+# Copyright 2025 The hmc5883l_compass Authors
+#
+# Use of this source code is governed by an MIT-style
+# license that can be found in the LICENSE file or at
+# https://opensource.org/licenses/MIT.
 """ROS2 node that reads HMC5883L over I2C and publishes sensor_msgs/MagneticField."""
 
 import time
 
+from hmc5883l_compass.hmc5883l_driver import FakeHMC5883LDriver
+from hmc5883l_compass.hmc5883l_driver import HMC5883LDriver
+from rcl_interfaces.msg import SetParametersResult
 import rclpy
 from rclpy.node import Node
-from rcl_interfaces.msg import SetParametersResult
 from sensor_msgs.msg import MagneticField
 from std_srvs.srv import Trigger
-
-from hmc5883l_compass.hmc5883l_driver import HMC5883LDriver, FakeHMC5883LDriver
 
 
 class HMC5883LCompassNode(Node):
@@ -29,14 +34,14 @@ class HMC5883LCompassNode(Node):
 
         # ── Read parameters ───────────────────────────────────────
         self.fake_mode = self.get_parameter('fake_mode').value
-        self.bus_num   = self.get_parameter('i2c_bus').value
-        self.address   = self.get_parameter('device_address').value
-        rate           = self.get_parameter('publish_rate').value
-        self.frame_id  = self.get_parameter('frame_id').value
-        self.gain      = self.get_parameter('gain').value
+        self.bus_num = self.get_parameter('i2c_bus').value
+        self.address = self.get_parameter('device_address').value
+        rate = self.get_parameter('publish_rate').value
+        self.frame_id = self.get_parameter('frame_id').value
+        self.gain = self.get_parameter('gain').value
         self.data_rate = self.get_parameter('data_rate').value
         self.samples_avg = self.get_parameter('samples_averaged').value
-        self.mag_cov   = self.get_parameter('magnetic_field_covariance').value
+        self.mag_cov = self.get_parameter('magnetic_field_covariance').value
 
         # ── Mag bias (set by calibration) ─────────────────────────
         self.mag_bias = [0.0, 0.0, 0.0]
@@ -180,7 +185,10 @@ def main(args=None):
     finally:
         node.driver.close()
         node.destroy_node()
-        rclpy.shutdown()
+        try:
+            rclpy.shutdown()
+        except Exception:
+            pass
 
 
 if __name__ == '__main__':
