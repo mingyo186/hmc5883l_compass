@@ -89,9 +89,31 @@ hmc5883l_compass/
 ├── hmc5883l_compass/
 │   ├── __init__.py
 │   └── hmc5883l_driver.py
-└── nodes/
-    └── hmc5883l_node.py
+├── nodes/
+│   └── hmc5883l_node.py
+└── test/
+    └── test_hmc5883l_node.py
 ```
+
+## Test Results
+
+Tested on Ubuntu 24.04 (WSL2) with `fake_mode: true`.
+
+```
+$ colcon test --packages-select hmc5883l_compass
+$ colcon test-result --verbose
+Summary: 27 tests, 0 errors, 0 failures, 0 skipped
+```
+
+| Test Category | Test | Result |
+|---|---|---|
+| **Topics** | `mag/data` publishes `sensor_msgs/MagneticField` | PASS |
+| **Topics** | `frame_id == "mag_link"` | PASS |
+| **Services** | `mag/calibrate` returns `success=True` | PASS |
+| **Services** | `mag/reset` returns `success=True` | PASS |
+| **Parameters** | `publish_rate` runtime change to 20.0 Hz | PASS |
+| **Shutdown** | Clean exit (code 0, -2, or -15) | PASS |
+| **Linting** | pep257, flake8, copyright, xmllint | PASS |
 
 ## License
 
